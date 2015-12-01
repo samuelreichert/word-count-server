@@ -1,0 +1,22 @@
+{
+  "name": "feevale-servidor-sistemas-distribuidos",
+  "version": "1.0.0",
+  "description": "feevale servidor sistemas distribuidos em node",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samuelreichert/feevale-servidor-sistemas-distribuidos.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samuelreichert/feevale-servidor-sistemas-distribuidos/issues"
+  },
+  "homepage": "https://github.com/samuelreichert/feevale-servidor-sistemas-distribuidos#readme",
+  "dependencies": {
+    "minimist": "^1.2.0"
+  }
+}
