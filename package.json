@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/samuelreichert/feevale-servidor-sistemas-distribuidos#readme",
   "dependencies": {
-    "minimist": "^1.2.0"
+    "yargs": "^3.30.0"
   }
 }
