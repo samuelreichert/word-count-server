@@ -6,7 +6,7 @@
 
 ## How to run
 Example:
-`node index.js -c localhost:5050 -c localhost:5051 -c localhost:5052 --search lorem --file lorem-ipsum.txt`
+`node index.js -c localhost:5050 localhost:5051 localhost:5052 -s lorem -f lorem-ipsum.txt` 
 
 ### Options
 * `-c` or `--client` to set a client
