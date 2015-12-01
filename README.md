@@ -5,6 +5,7 @@
 * Universidade: _Universidade Feevale_
 
 ## How to run
+Example:
 `node index.js -c localhost:5050 -c localhost:5051 -c localhost:5052 --search lorem --file lorem-ipsum.txt`
 
 ### Options
