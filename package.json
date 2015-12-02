@@ -11,7 +11,17 @@
     "type": "git",
     "url": "git+https://github.com/samuelreichert/feevale-servidor-sistemas-distribuidos.git"
   },
-  "author": "",
+  "author": "Samuel Reichert <samuelreichertt@gmail.com>",
+  "contributors": [
+    {
+      "name": "Samuel Reichert",
+      "email": "samuelreichertt@gmail.com"
+    },
+    {
+      "name": "Paulo Diovani",
+      "email": "paulo@diovani.com"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/samuelreichert/feevale-servidor-sistemas-distribuidos/issues"
