@@ -24,11 +24,20 @@
     }
   ],
   "license": "MIT",
+  "scripts": {
+    "test": "mocha test/bootstrap.test.js test/**/*_spec.coffee",
+    "test-debug": "mocha debug test/bootstrap.test.js test/**/*_spec.coffee"
+  },
   "bugs": {
     "url": "https://github.com/samuelreichert/feevale-servidor-sistemas-distribuidos/issues"
   },
   "homepage": "https://github.com/samuelreichert/feevale-servidor-sistemas-distribuidos#readme",
   "dependencies": {
     "yargs": "^3.30.0"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "coffee-script": "^1.10.0",
+    "mocha": "^2.3.4"
   }
 }
