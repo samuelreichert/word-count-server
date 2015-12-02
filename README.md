@@ -12,7 +12,12 @@ Created for Feevale University Distributed Systems Course on year 2015.
 ## How to run
 
 ```console
-node index.js -c localhost:5050 localhost:5051 localhost:5052 -s lorem -f lorem-ipsum.txt
+node index.js -c \
+  http://localhost:5050 \
+  http://localhost:5051 \
+  http://localhost:5052 \
+  -s lorem \
+  -f lorem-ipsum.txt
 ```
 
 ### Options
