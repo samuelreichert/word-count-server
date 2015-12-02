@@ -20,3 +20,10 @@ node index.js -c localhost:5050 localhost:5051 localhost:5052 -s lorem -f lorem-
 * `-c` or `--client` to set one or more clients
 * `-s` or `--search` to set the word that will be searched
 * `-f` or `--file` to set the file that will be used (path to file)
+
+
+## Testing
+
+```console
+npm test
+```
