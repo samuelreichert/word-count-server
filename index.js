@@ -1,3 +1,4 @@
+var fs = require('fs');
 var argv = require('yargs')
   .option('c', {
     alias: 'client',
@@ -16,7 +17,13 @@ var argv = require('yargs')
 var clients = argv.client;
 var search = argv.search;
 var filename = argv.file;
+var fileArray = [];
 
 console.log(clients);
 console.log(search);
-console.log(filename);
+
+fs.readFile(filename, 'utf8', function(err, data) {
+  if (err) throw err;
+  fileArray = data.match(/([^\s]+\s\s*){1,200}/g);
+  console.log(fileArray);
+});
