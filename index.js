@@ -20,7 +20,8 @@ var
   search = argv.search,
   filename = argv.file,
   fileArray = [],
-  count = 0,
+  countArray = 0,
+  ocurrences = 0,
   postData = JSON.stringify({
     'content': fileArray[0],
     'search': search
@@ -43,12 +44,32 @@ fs.readFile(filename, 'utf8', function(err, data) {
   console.log(fileArray);
 });
 
+for (var i = 0; i < clients.length; i++) {
+  var client = clients[i];
+  getOcurrences(client);
+};
+
+function getOcurrences(client) {
+  if(countArray < fileArray.length) {
+    // enviar o texto para cliente
+    // chamar o metodo novamente
+  }
+};
+
 request = http.request(options, function(res) {
   console.log('STATUS: ' + res.statusCode);
   console.log('HEADERS: ' + JSON.stringify(res.headers));
   res.setEncoding('utf8');
   res.on('data', function (chunk) {
-    console.log('BODY: ' + chunk);
+    var 
+      searchReturned = chunk.body.search,
+      ocurrencesReturned = chunk.body.ocurrences;
+
+    if(searchReturned == search) {
+      ocurrences += ocurrencesReturned;
+
+      countArray++;
+    }
   });
   res.on('end', function() {
     console.log('No more data in response.')
