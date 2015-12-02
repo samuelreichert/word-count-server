@@ -29,7 +29,7 @@ var
     'search': search
   }),
   options = {
-    protocol: 'http',
+    protocol: 'http:',
     host: 'localhost',
     port: 8080,
     method: 'POST',
