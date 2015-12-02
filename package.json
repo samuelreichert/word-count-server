@@ -1,17 +1,29 @@
 {
-  "name": "feevale-servidor-sistemas-distribuidos",
-  "version": "1.0.0",
+  "name": "word-counter-server",
+  "version": "0.0.0",
   "description": "feevale servidor sistemas distribuidos em node",
+  "private": true,
   "main": "index.js",
-  "scripts": {
-    "test": "npm test"
+  "bin": "bin/cli.js",
+  "engines": {
+    "node": "^5.0.0"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/samuelreichert/feevale-servidor-sistemas-distribuidos.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Samuel Reichert <samuelreichertt@gmail.com>",
+  "contributors": [
+    {
+      "name": "Samuel Reichert",
+      "email": "samuelreichertt@gmail.com"
+    },
+    {
+      "name": "Paulo Diovani",
+      "email": "paulo@diovani.com"
+    }
+  ],
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/samuelreichert/feevale-servidor-sistemas-distribuidos/issues"
   },
