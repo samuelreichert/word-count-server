@@ -19,3 +19,9 @@ describe 'client_parse', ->
 
   it 'parses path', ->
     expect(@options.path).to.eql '/'
+
+  it 'sets method to POST', ->
+    expect(@options.method).to.eql 'POST'
+
+  it 'sets Content-type to application/json', ->
+    expect(@options.headers).to.have.property 'Content-Type', 'application/json'
