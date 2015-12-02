@@ -1,5 +1,5 @@
 var 
-  fs = require('fs')
+  fs = require('fs');
   argv = require('yargs')
     .option('c', {
       alias: 'client',
@@ -21,7 +21,7 @@ var
   filename = argv.file,
   fileArray = [],
   count = 0,
-  postData = querystring.stringify({
+  postData = JSON.stringify({
     'content': fileArray[0],
     'search': search
   }),
@@ -32,7 +32,7 @@ var
     method: 'POST',
     path: '/',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     }
   },
   request = null;
