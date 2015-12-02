@@ -17,7 +17,7 @@ var argv = yargs
     })
     .argv;
 
-var 
+var
   clients = argv.client,
   search = argv.search,
   filename = argv.file,
@@ -63,7 +63,7 @@ request = http.request(options, function(res) {
   console.log('HEADERS: ' + JSON.stringify(res.headers));
   res.setEncoding('utf8');
   res.on('data', function (chunk) {
-    var 
+    var
       searchReturned = chunk.body.search,
       ocurrencesReturned = chunk.body.ocurrences;
 
