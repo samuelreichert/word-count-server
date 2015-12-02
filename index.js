@@ -1,6 +1,8 @@
-var 
-  fs = require('fs');
-  argv = require('yargs')
+var yargs = require('yargs');
+var fs    = require('fs');
+var http  = require('http');
+
+var argv = yargs
     .option('c', {
       alias: 'client',
       type: 'array'
@@ -15,7 +17,7 @@ var
     })
     .argv;
 
-var 
+var
   clients = argv.client,
   search = argv.search,
   filename = argv.file,
@@ -27,7 +29,7 @@ var
     'search': search
   }),
   options = {
-    protocol: 'http',
+    protocol: 'http:',
     host: 'localhost',
     port: 8080,
     method: 'POST',
@@ -61,7 +63,7 @@ request = http.request(options, function(res) {
   console.log('HEADERS: ' + JSON.stringify(res.headers));
   res.setEncoding('utf8');
   res.on('data', function (chunk) {
-    var 
+    var
       searchReturned = chunk.body.search,
       ocurrencesReturned = chunk.body.ocurrences;
 
