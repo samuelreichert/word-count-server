@@ -4,6 +4,7 @@
   "description": "feevale servidor sistemas distribuidos em node",
   "private": true,
   "main": "index.js",
+  "bin": "bin/cli.js",
   "engines": {
     "node": "^5.0.0"
   },
