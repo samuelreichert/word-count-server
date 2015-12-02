@@ -1,5 +1,5 @@
 {
-  "name": "feevale-servidor-sistemas-distribuidos",
+  "name": "word-counter-server",
   "version": "0.0.0",
   "description": "feevale servidor sistemas distribuidos em node",
   "private": true,
