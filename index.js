@@ -1,6 +1,8 @@
-var 
-  fs = require('fs');
-  argv = require('yargs')
+var yargs = require('yargs');
+var fs    = require('fs');
+var http  = require('http');
+
+var argv = yargs
     .option('c', {
       alias: 'client',
       type: 'array'
