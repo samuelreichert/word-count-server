@@ -81,7 +81,7 @@ function sendRequest(client, postData) {
   });
 
   request.write(postData);
-  request.end();
+  request.end(postData);
 };
 
 function process_client(client, res) {
