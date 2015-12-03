@@ -24,7 +24,7 @@ var
   search = argv.search,
   filename = argv.file,
   fileArray = [],
-  countArray = 0,
+  client_count = 0,
   ocurrences = 0,
   options = {
     host: 'localhost',
@@ -51,7 +51,6 @@ function mountOptions() {
   for (var i = 0; i < clients.length; i++) {
     var client = clients[i];
     var postData = getPostData();
-    countArray++;
 
     if (postData) {
       sendRequest(client, postData);
@@ -61,10 +60,12 @@ function mountOptions() {
   }
 };
 
+// Pega um pedaço do texto e a palavra a ser buscada e monta um objeto para enviar ao client
 function getPostData() {
-  if(countArray < fileArray.length) {
+  var content = fileArray.pop();
+  if(content != null) {
     return JSON.stringify({
-      'content': fileArray[countArray],
+      'content': content,
       'search': search
     });
   } else {
@@ -74,20 +75,18 @@ function getPostData() {
 
 // Envia para o cliente um pedaço do texto e a palavra a ser buscada (Start dos requests)
 function sendRequest(client, postData) {
-  if(countArray <= fileArray.length) {
-    var options = client_parse(client);
-    var request = http.request(options, process_client.bind(null, client));
+  var options = client_parse(client);
+  var request = http.request(options, process_client.bind(null, client));
+  do_request();
 
-    request.on('error', function(e) {
-      debug('Error processing request: ' + e.message);
-    });
+  request.on('error', function(e) {
+    debug('Error processing request: ' + e.message);
+  });
 
-    request.write(postData);
-
-    request.end();
-  }
+  request.end(postData);
 };
 
+// Resposta enviada do client
 function process_client(client, res) {
   res.setEncoding('utf8');
   res.on('data', function (chunk) {
@@ -95,20 +94,27 @@ function process_client(client, res) {
     debug('Client "%s" responded with %o', client, chunk);
     var searchReturned = chunk.search;
     var ocurrencesReturned = chunk.ocurrences;
+    var postData = getPostData();
 
     ocurrences += ocurrencesReturned;
+    process_response();
 
-    if(countArray < fileArray.length) {
-      var postData = getPostData();
-      countArray++;
-
-      if (postData) {
-        sendRequest(client, postData);
-      } else {
-        debug('End of file reached');
-      }
-    } else {
-      console.log('Found %d ocurrences of "%s" on file %s.', ocurrences, search, filename);
+    // Se ainda há algum pedaço do arquivo então envia outro para o client
+    if (postData) {
+      sendRequest(client, postData);
     }
   });
 };
+
+// contador de requests
+function do_request() {
+  client_count++;
+}
+
+// quando todos os requests retornarem mostra a mensagem final no terminal
+function process_response() {
+  client_count--;
+  if (client_count === 0) {
+    console.log('Found %d ocurrences of "%s" on file %s.', ocurrences, search, filename);
+  }
+}
