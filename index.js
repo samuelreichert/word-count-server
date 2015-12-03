@@ -50,12 +50,11 @@ fs.readFile(filename, 'utf8', function(err, data) {
 function mountOptions() {
   for (var i = 0; i < clients.length; i++) {
     var client = clients[i];
-    var options = client_parse(client);
     var postData = getPostData();
     countArray++;
 
     if (postData) {
-      sendRequest(options, postData);
+      sendRequest(client, postData);
     } else {
       debug('End of file reached');
     }
@@ -74,10 +73,10 @@ function getPostData() {
 };
 
 // Envia para o cliente um pedaço do texto e a palavra a ser buscada (Start dos requests)
-function sendRequest(options, postData) {
+function sendRequest(client, postData) {
   if(countArray <= fileArray.length) {
-    var request = http.request(options, process_client);
-
+    var options = client_parse(client);
+    var request = http.request(options, process_client.bind(null, client));
 
     request.on('error', function(e) {
       debug('Error processing request: ' + e.message);
@@ -89,9 +88,7 @@ function sendRequest(options, postData) {
   }
 };
 
-function process_client(res) {
-  var client = 'http://' + res.connection.remoteAddress + ':' + res.connection.remotePort;
-
+function process_client(client, res) {
   res.setEncoding('utf8');
   res.on('data', function (chunk) {
     var chunk = JSON.parse(chunk);
@@ -102,12 +99,11 @@ function process_client(res) {
     ocurrences += ocurrencesReturned;
 
     if(countArray < fileArray.length) {
-      var options = client_parse(client);
       var postData = getPostData();
       countArray++;
 
       if (postData) {
-        sendRequest(options, postData);
+        sendRequest(client, postData);
       } else {
         debug('End of file reached');
       }
