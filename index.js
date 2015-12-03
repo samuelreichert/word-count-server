@@ -1,6 +1,7 @@
 var yargs = require('yargs');
 var fs    = require('fs');
 var http  = require('http');
+var debug = require('debug')('word-counter:index');
 var client_parse = require('./lib/client_parse.js');
 
 var argv = yargs
@@ -49,7 +50,7 @@ fs.readFile(filename, 'utf8', function(err, data) {
 function mountOptions() {
   for (var i = 0; i < clients.length; i++) {
     var client = clients[i];
-    // console.log(client);
+    // debug(client);
     var options = client_parse(client);
     var postData = getPostData();
     countArray++;
@@ -57,7 +58,7 @@ function mountOptions() {
     if (postData) {
       sendRequest(options, postData);
     } else {
-      console.log("Ultimo pedaco do array ja foi enviado");
+      debug("Ultimo pedaco do array ja foi enviado");
     }
   }
 };
@@ -80,7 +81,7 @@ function sendRequest(options, postData) {
 
 
     request.on('error', function(e) {
-      console.log('Problema com o request: ' + e.message);
+      debug('Problema com o request: ' + e.message);
     });
 
     request.write(postData);
@@ -90,14 +91,14 @@ function sendRequest(options, postData) {
 };
 
 function process_client(res) {
-  console.log('STATUS: ' + res.statusCode);
-  console.log(res.headers);
+  debug('STATUS: ' + res.statusCode);
+  debug(res.headers);
   var client = "http://" + res.connection.remoteAddress + ":" + res.connection.remotePort;
 
   res.setEncoding('utf8');
   res.on('data', function (chunk) {
     var chunk = JSON.parse(chunk);
-    console.log(chunk);
+    debug(chunk);
     var searchReturned = chunk.search;
     var ocurrencesReturned = chunk.ocurrences;
 
@@ -111,10 +112,10 @@ function process_client(res) {
       if (postData) {
         sendRequest(options, postData);
       } else {
-        console.log("Ultimo pedaco do array ja foi enviado");
+        debug("Ultimo pedaco do array ja foi enviado");
       }
     } else {
-      console.log(
+      debug(
         "Foram encontradas " +
         ocurrences +
         " ocorrências da palavra " +
@@ -126,6 +127,6 @@ function process_client(res) {
   });
 
   res.on('end', function() {
-    console.log('No more data in response.')
+    debug('No more data in response.')
   });
 };
