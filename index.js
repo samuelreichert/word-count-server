@@ -50,7 +50,6 @@ fs.readFile(filename, 'utf8', function(err, data) {
 function mountOptions() {
   for (var i = 0; i < clients.length; i++) {
     var client = clients[i];
-    // debug(client);
     var options = client_parse(client);
     var postData = getPostData();
     countArray++;
@@ -58,7 +57,7 @@ function mountOptions() {
     if (postData) {
       sendRequest(options, postData);
     } else {
-      debug("Ultimo pedaco do array ja foi enviado");
+      debug('End of file reached');
     }
   }
 };
@@ -81,7 +80,7 @@ function sendRequest(options, postData) {
 
 
     request.on('error', function(e) {
-      debug('Problema com o request: ' + e.message);
+      debug('Error processing request: ' + e.message);
     });
 
     request.write(postData);
@@ -91,14 +90,12 @@ function sendRequest(options, postData) {
 };
 
 function process_client(res) {
-  debug('STATUS: ' + res.statusCode);
-  debug(res.headers);
-  var client = "http://" + res.connection.remoteAddress + ":" + res.connection.remotePort;
+  var client = 'http://' + res.connection.remoteAddress + ':' + res.connection.remotePort;
 
   res.setEncoding('utf8');
   res.on('data', function (chunk) {
     var chunk = JSON.parse(chunk);
-    debug(chunk);
+    debug('Client "%s" responded with %o', client, chunk);
     var searchReturned = chunk.search;
     var ocurrencesReturned = chunk.ocurrences;
 
@@ -112,21 +109,10 @@ function process_client(res) {
       if (postData) {
         sendRequest(options, postData);
       } else {
-        debug("Ultimo pedaco do array ja foi enviado");
+        debug('End of file reached');
       }
     } else {
-      debug(
-        "Foram encontradas " +
-        ocurrences +
-        " ocorrências da palavra " +
-        search +
-        " no arquivo: " +
-        filename
-      );
+      debug('Found %d ocurrences of "%s" on file %s.', ocurrences, search, filename);
     }
-  });
-
-  res.on('end', function() {
-    debug('No more data in response.')
   });
 };
