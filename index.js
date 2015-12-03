@@ -108,7 +108,7 @@ function process_client(client, res) {
         debug('End of file reached');
       }
     } else {
-      debug('Found %d ocurrences of "%s" on file %s.', ocurrences, search, filename);
+      console.log('Found %d ocurrences of "%s" on file %s.', ocurrences, search, filename);
     }
   });
 };
