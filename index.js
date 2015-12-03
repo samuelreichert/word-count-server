@@ -60,6 +60,7 @@ function mountOptions() {
   }
 };
 
+// Pega um pedaço do texto e a palavra a ser buscada e monta um objeto para enviar ao client
 function getPostData() {
   var content = fileArray.pop();
   if(content != null) {
@@ -85,6 +86,7 @@ function sendRequest(client, postData) {
   request.end(postData);
 };
 
+// Resposta enviada do client
 function process_client(client, res) {
   res.setEncoding('utf8');
   res.on('data', function (chunk) {
@@ -97,20 +99,22 @@ function process_client(client, res) {
     ocurrences += ocurrencesReturned;
     process_response();
 
+    // Se ainda há algum pedaço do arquivo então envia outro para o client
     if (postData) {
       sendRequest(client, postData);
     }
   });
 };
 
+// contador de requests
 function do_request() {
   client_count++;
 }
 
+// quando todos os requests retornarem mostra a mensagem final no terminal
 function process_response() {
   client_count--;
   if (client_count === 0) {
-    // console.log('end of requests');
     console.log('Found %d ocurrences of "%s" on file %s.', ocurrences, search, filename);
   }
 }
