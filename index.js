@@ -1,6 +1,7 @@
 var yargs = require('yargs');
 var fs    = require('fs');
 var http  = require('http');
+var client_parse = require('./lib/client_parse.js');
 
 var argv = yargs
     .option('c', {
@@ -24,14 +25,9 @@ var
   fileArray = [],
   countArray = 0,
   ocurrences = 0,
-  postData = JSON.stringify({
-    'content': fileArray[0],
-    'search': search
-  }),
   options = {
-    protocol: 'http:',
     host: 'localhost',
-    port: 8080,
+    port: 5050,
     method: 'POST',
     path: '/',
     headers: {
@@ -40,47 +36,81 @@ var
   },
   request = null;
 
+// Lê o arquivo
 fs.readFile(filename, 'utf8', function(err, data) {
   if (err) throw err;
+  // Separa o arquivo em pedaços e guarda no array `fileArray`
   fileArray = data.match(/([^\s]+\s\s*){1,200}/g);
-  console.log(fileArray);
+
+  mountOptions();
 });
 
-for (var i = 0; i < clients.length; i++) {
-  var client = clients[i];
-  getOcurrences(client);
-};
+// Monta as opções de cada client para enviar
+function mountOptions() {
+  for (var i = 0; i < clients.length; i++) {
+    var client = clients[i];
+    // console.log(client);
+    var options = client_parse(client);
+    var postData = getPostData();
+    countArray++;
 
-function getOcurrences(client) {
-  if(countArray < fileArray.length) {
-    // enviar o texto para cliente
-    // chamar o metodo novamente
+    if (postData) {
+      sendRequest(options, postData);
+    } else {
+      console.log("Ultimo pedaco do array ja foi enviado");
+    }
   }
 };
 
-request = http.request(options, function(res) {
+function getPostData() {
+  if(countArray < fileArray.length) {
+    return JSON.stringify({
+      'content': fileArray[countArray],
+      'search': search
+    });
+  } else {
+    return false;
+  }
+};
+
+// Envia para o cliente um pedaço do texto e a palavra a ser buscada (Start dos requests)
+function sendRequest(options, postData) {
+  if(countArray <= fileArray.length) {
+    var request = http.request(options, process_client);
+
+
+    request.on('error', function(e) {
+      console.log('Problema com o request: ' + e.message);
+    });
+
+    request.write(postData);
+
+    request.end();
+  }
+};
+
+function process_client(res) {
+  // console.log(res);
   console.log('STATUS: ' + res.statusCode);
-  console.log('HEADERS: ' + JSON.stringify(res.headers));
-  res.setEncoding('utf8');
-  res.on('data', function (chunk) {
-    var
-      searchReturned = chunk.body.search,
-      ocurrencesReturned = chunk.body.ocurrences;
+  console.log(res.headers);
+  // res.setEncoding('utf8');
+  // res.on('data', function (chunk) {
+  //   console.log(chunk);
+  //   var searchReturned = chunk.search;
+  //   var ocurrencesReturned = chunk.ocurrences;
 
-    if(searchReturned == search) {
-      ocurrences += ocurrencesReturned;
+  //   // infos client
 
-      countArray++;
-    }
-  });
-  res.on('end', function() {
-    console.log('No more data in response.')
-  });
-});
+  //   if(countArray < fileArray.length) {
+  //     var options
+  //     var postData
 
-request.on('error', function(e) {
-  console.log('problem with request: ' + e.message);
-});
+  //     countArray++;
+  //   }
 
-request.write(postData);
-request.end();
+  // });
+
+  // res.on('end', function() {
+  //   console.log('No more data in response.')
+  // });
+};
