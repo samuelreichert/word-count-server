@@ -61,7 +61,7 @@ function mountOptions() {
 
 function getPostData() {
   var content = fileArray.pop();
-  if(content != undefined) {
+  if(content != null) {
     return JSON.stringify({
       'content': content,
       'search': search
