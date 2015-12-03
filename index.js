@@ -94,15 +94,19 @@ function process_client(client, res) {
     debug('Client "%s" responded with %o', client, chunk);
     var searchReturned = chunk.search;
     var ocurrencesReturned = chunk.ocurrences;
-    var postData = getPostData();
 
     ocurrences += ocurrencesReturned;
-    process_response();
+  });
+
+  res.on('end', function(){
+    var postData = getPostData();
 
     // Se ainda há algum pedaço do arquivo então envia outro para o client
     if (postData) {
       sendRequest(client, postData);
     }
+
+    process_response();
   });
 };
 
