@@ -14,7 +14,7 @@ Created for Feevale University Distributed Systems Course on year 2015.
 ## How to run
 
 ```console
-node index.js -c \
+DEBUG=* node index.js -c \
   http://localhost:5050 \
   http://localhost:5051 \
   http://localhost:5052 \
