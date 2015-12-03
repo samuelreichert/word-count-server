@@ -24,6 +24,7 @@ var
   search = argv.search,
   filename = argv.file,
   fileArray = [],
+  client_count = 0,
   ocurrences = 0,
   options = {
     host: 'localhost',
@@ -75,13 +76,14 @@ function getPostData() {
 function sendRequest(client, postData) {
   var options = client_parse(client);
   var request = http.request(options, process_client.bind(null, client));
+  do_request();
 
   request.on('error', function(e) {
     debug('Error processing request: ' + e.message);
   });
 
   request.write(postData);
-  request.end(postData);
+  request.end();
 };
 
 function process_client(client, res) {
@@ -91,19 +93,25 @@ function process_client(client, res) {
     debug('Client "%s" responded with %o', client, chunk);
     var searchReturned = chunk.search;
     var ocurrencesReturned = chunk.ocurrences;
+    var postData = getPostData();
 
     ocurrences += ocurrencesReturned;
+    process_response();
 
-    if(fileArray.length > 0) {
-      var postData = getPostData();
-
-      if (postData) {
-        sendRequest(client, postData);
-      } else {
-        debug('End of file reached');
-      }
-    } else {
-      console.log('Found %d ocurrences of "%s" on file %s.', ocurrences, search, filename);
+    if (postData) {
+      sendRequest(client, postData);
     }
   });
 };
+
+function do_request() {
+  client_count++;
+}
+
+function process_response() {
+  client_count--;
+  if (client_count === 0) {
+    // console.log('end of requests');
+    console.log('Found %d ocurrences of "%s" on file %s.', ocurrences, search, filename);
+  }
+}
