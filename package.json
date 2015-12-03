@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/samuelreichert/feevale-servidor-sistemas-distribuidos#readme",
   "dependencies": {
+    "debug": "^2.2.0",
     "yargs": "^3.30.0"
   },
   "devDependencies": {
