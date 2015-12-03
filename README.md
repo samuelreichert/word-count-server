@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/samuelreichert/feevale-servidor-sistemas-distribuidos.svg)](https://travis-ci.org/samuelreichert/feevale-servidor-sistemas-distribuidos)
+
 # Word counter server
 
 Counts occurrence of words using distributed REST services.
