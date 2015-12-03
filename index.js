@@ -24,7 +24,6 @@ var
   search = argv.search,
   filename = argv.file,
   fileArray = [],
-  countArray = 0,
   ocurrences = 0,
   options = {
     host: 'localhost',
@@ -51,7 +50,6 @@ function mountOptions() {
   for (var i = 0; i < clients.length; i++) {
     var client = clients[i];
     var postData = getPostData();
-    countArray++;
 
     if (postData) {
       sendRequest(client, postData);
@@ -62,9 +60,10 @@ function mountOptions() {
 };
 
 function getPostData() {
-  if(countArray < fileArray.length) {
+  var content = fileArray.pop();
+  if(content != undefined) {
     return JSON.stringify({
-      'content': fileArray[countArray],
+      'content': content,
       'search': search
     });
   } else {
@@ -74,18 +73,15 @@ function getPostData() {
 
 // Envia para o cliente um pedaço do texto e a palavra a ser buscada (Start dos requests)
 function sendRequest(client, postData) {
-  if(countArray <= fileArray.length) {
-    var options = client_parse(client);
-    var request = http.request(options, process_client.bind(null, client));
+  var options = client_parse(client);
+  var request = http.request(options, process_client.bind(null, client));
 
-    request.on('error', function(e) {
-      debug('Error processing request: ' + e.message);
-    });
+  request.on('error', function(e) {
+    debug('Error processing request: ' + e.message);
+  });
 
-    request.write(postData);
-
-    request.end();
-  }
+  request.write(postData);
+  request.end();
 };
 
 function process_client(client, res) {
@@ -98,9 +94,8 @@ function process_client(client, res) {
 
     ocurrences += ocurrencesReturned;
 
-    if(countArray < fileArray.length) {
+    if(fileArray.length > 0) {
       var postData = getPostData();
-      countArray++;
 
       if (postData) {
         sendRequest(client, postData);
