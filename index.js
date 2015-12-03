@@ -82,8 +82,7 @@ function sendRequest(client, postData) {
     debug('Error processing request: ' + e.message);
   });
 
-  request.write(postData);
-  request.end();
+  request.end(postData);
 };
 
 function process_client(client, res) {
