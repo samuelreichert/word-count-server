@@ -90,27 +90,42 @@ function sendRequest(options, postData) {
 };
 
 function process_client(res) {
-  // console.log(res);
   console.log('STATUS: ' + res.statusCode);
   console.log(res.headers);
-  // res.setEncoding('utf8');
-  // res.on('data', function (chunk) {
-  //   console.log(chunk);
-  //   var searchReturned = chunk.search;
-  //   var ocurrencesReturned = chunk.ocurrences;
+  var client = "http://" + res.connection.remoteAddress + ":" + res.connection.remotePort;
 
-  //   // infos client
+  res.setEncoding('utf8');
+  res.on('data', function (chunk) {
+    var chunk = JSON.parse(chunk);
+    console.log(chunk);
+    var searchReturned = chunk.search;
+    var ocurrencesReturned = chunk.ocurrences;
 
-  //   if(countArray < fileArray.length) {
-  //     var options
-  //     var postData
+    ocurrences += ocurrencesReturned;
 
-  //     countArray++;
-  //   }
+    if(countArray < fileArray.length) {
+      var options = client_parse(client);
+      var postData = getPostData();
+      countArray++;
 
-  // });
+      if (postData) {
+        sendRequest(options, postData);
+      } else {
+        console.log("Ultimo pedaco do array ja foi enviado");
+      }
+    } else {
+      console.log(
+        "Foram encontradas " +
+        ocurrences +
+        " ocorrências da palavra " +
+        search +
+        " no arquivo: " +
+        filename
+      );
+    }
+  });
 
-  // res.on('end', function() {
-  //   console.log('No more data in response.')
-  // });
+  res.on('end', function() {
+    console.log('No more data in response.')
+  });
 };
